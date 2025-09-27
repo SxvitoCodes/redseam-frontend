@@ -3,6 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
+import ProductListPage from "./pages/ProductList";
+import ProductDetailPage from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -10,7 +12,8 @@ function App() {
       <Navbar />
 
       <Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
+        <Route path="/" element={<ProductListPage />} />
+        <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* Redirect unknown paths to home */}
