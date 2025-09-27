@@ -5,11 +5,9 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 
 function App() {
-  const isLoggedIn = false; // will replace later with real auth logic
-
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar />
 
       <Routes>
         {/* <Route path="/" element={<HomePage />} /> */}
