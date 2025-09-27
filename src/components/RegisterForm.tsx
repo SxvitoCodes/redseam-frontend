@@ -4,6 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import type { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Input from "./Input";
 import Button from "./Button";
 
@@ -22,7 +24,7 @@ const registerSchema = z
 
 type RegisterData = z.infer<typeof registerSchema>;
 
-const API_KEY = "https://api.redseam.redberryinternship.ge/api";
+const API_URL = "https://api.redseam.redberryinternship.ge/api";
 
 export default function RegisterForm() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -46,6 +48,9 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
   });
 
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const onSubmit = async (data: RegisterData) => {
     const formData = new FormData();
     formData.append("username", data.username);
@@ -58,11 +63,12 @@ export default function RegisterForm() {
 
     try {
       setServerError(null); // reset before request
-      const res = await axios.post(API_KEY + "/register", formData, {
+      const res = await axios.post(API_URL + "/register", formData, {
         headers: { Accept: "application/json" },
       });
-      console.log("Registered:", res.data);
-      // TODO: save token, redirect, etc.
+      const { user, token } = res.data;
+      login(user, token); // save to context + localStorage
+      navigate("/dashboard"); // redirect after success
     } catch (err) {
       const axiosError = err as AxiosError<{
         message?: string;
