@@ -4,11 +4,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import type { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Input from "./Input";
 import Button from "./Button";
 import { API_URL } from "../config";
+import Eye from "../assets/eye.svg";
 
 const registerSchema = z
   .object({
@@ -29,6 +30,8 @@ export default function RegisterForm() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
 
   const handleFileChange = (file: File | null) => {
     setAvatarFile(file);
@@ -82,7 +85,50 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-12 space-y-6">
+      <div>
+        {!avatarPreview ? (
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => document.getElementById("avatarInput")?.click()}
+          >
+            Upload Avatar
+          </Button>
+        ) : (
+          <div className="flex items-center gap-4">
+            <img
+              src={avatarPreview}
+              alt="Avatar Preview"
+              className="h-20 w-20 object-cover rounded-full"
+            />
+            <div className="flex gap-4 text-seondary text-[0.875rem]">
+              <button
+                type="button"
+                onClick={() => document.getElementById("avatarInput")?.click()}
+                className="cursor-pointer"
+              >
+                Upload New
+              </button>
+              <button
+                type="button"
+                onClick={() => handleFileChange(null)}
+                className="cursor-pointer"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        )}
+        <input
+          id="avatarInput"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
+        />
+      </div>
+
       <Input
         placeholder="Username"
         {...register("username")}
@@ -100,67 +146,50 @@ export default function RegisterForm() {
 
       <Input
         placeholder="Password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         {...register("password")}
         variant={errors.password ? "error" : "default"}
         errorMessage={errors.password?.message}
+        iconRight={
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="focus:outline-none cursor-pointer"
+          >
+            <img src={Eye} alt="eye svg" />
+          </button>
+        }
       />
 
       <Input
         placeholder="Confirm Password"
-        type="password"
+        type={showConfirmedPassword ? "text" : "password"}
         {...register("password_confirmation")}
         variant={errors.password_confirmation ? "error" : "default"}
         errorMessage={errors.password_confirmation?.message}
-      />
-
-      <div>
-        {!avatarPreview ? (
-          <Button
+        iconRight={
+          <button
             type="button"
-            variant="secondary"
-            onClick={() => document.getElementById("avatarInput")?.click()}
+            onClick={() => setShowConfirmedPassword((prev) => !prev)}
+            className="focus:outline-none cursor-pointer"
           >
-            Upload Avatar
-          </Button>
-        ) : (
-          <div className="flex items-center gap-4">
-            <img
-              src={avatarPreview}
-              alt="Avatar Preview"
-              className="h-20 w-20 object-cover rounded-full border"
-            />
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => document.getElementById("avatarInput")?.click()}
-              >
-                Upload New
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={() => handleFileChange(null)}
-              >
-                Remove
-              </Button>
-            </div>
-          </div>
-        )}
-        <input
-          id="avatarInput"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
-        />
-      </div>
+            <img src={Eye} alt="eye svg" />
+          </button>
+        }
+      />
 
       <Button type="submit" className="w-full">
         Register
       </Button>
       {serverError && <p className="text-red text-sm mt-2">{serverError}</p>}
+      <p className="text-center">
+        <span className="text-secondary text-[0.875rem]">Already member? </span>
+        <span>
+          <Link to="/login" className="text-red text-[0.875rem] font-medium">
+            Log in
+          </Link>
+        </span>
+      </p>
     </form>
   );
 }

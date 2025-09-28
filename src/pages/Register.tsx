@@ -3,7 +3,7 @@ import authSideImage from "../assets/auth-side.png";
 
 export default function RegisterPage() {
   return (
-    <div className="w-full flex h-[calc(100vh-5rem)]">
+    <div className="flex h-screen">
       {/* Left side image */}
       <div className="flex w-1/2 bg-grey items-center justify-center">
         <img
@@ -14,8 +14,8 @@ export default function RegisterPage() {
       </div>
 
       {/* Right side form */}
-      <div className="w-1/2 flex flex-col justify-center px-8 md:px-16">
-        <h1 className="text-5xl text-primary font-semibold mb-12">Registration</h1>
+      <div className="w-1/2 flex flex-col justify-center px-[172px]">
+        <h1 className="text-primary text-[2.625rem] font-semibold">Registration</h1>
         <RegisterForm />
       </div>
     </div>
