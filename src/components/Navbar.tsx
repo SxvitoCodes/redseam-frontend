@@ -60,7 +60,7 @@ export default function Navbar() {
                   className="flex items-center gap-1 cursor-pointer"
                 >
                   <img
-                    src={user?.profile_photo || PersonSvg}
+                    src={user?.avatar || PersonSvg}
                     alt="User Avatar"
                     className="h-10 w-10 rounded-full object-cover"
                   />
