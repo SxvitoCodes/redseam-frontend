@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Input from "./Input";
 import Button from "./Button";
+import { API_URL } from "../config";
 
 const registerSchema = z
   .object({
@@ -23,8 +24,6 @@ const registerSchema = z
   });
 
 type RegisterData = z.infer<typeof registerSchema>;
-
-const API_URL = "https://api.redseam.redberryinternship.ge/api";
 
 export default function RegisterForm() {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);

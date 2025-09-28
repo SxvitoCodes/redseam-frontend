@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-
-const API_URL = "https://api.redseam.redberryinternship.ge/api";
+import { API_URL } from "../config";
 
 type CartItem = {
   id: number;

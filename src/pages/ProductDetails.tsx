@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductGallery from "../components/ProductGallery";
 import ProductInfo from "../components/ProductInfo";
+import { API_URL } from "../config";
 
 export type Product = {
   id: number;
@@ -15,8 +16,6 @@ export type Product = {
   brand?: { name: string; image: string };
 };
 
-const API_URL = "https://api.redseam.redberryinternship.ge/api" + "/products";
-
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
@@ -25,7 +24,7 @@ export default function ProductDetail() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    fetch(API_URL + `/${id}`, {
+    fetch(API_URL + `/products/${id}`, {
       headers: { Accept: "application/json" },
     })
       .then((res) => res.json())

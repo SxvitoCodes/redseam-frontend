@@ -8,6 +8,7 @@ import PaginationButton from "../components/PaginationButton";
 import { getPaginationRange } from "../helpers/pagination";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { API_URL } from "../config";
 
 type Product = {
   id: number;
@@ -27,8 +28,6 @@ type ApiResponse = {
     from: number;
   };
 };
-
-const API_URL = "https://api.redseam.redberryinternship.ge/api" + "/products";
 
 export default function ProductListPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -53,7 +52,7 @@ export default function ProductListPage() {
     fromClear?: boolean;
   }) => {
     try {
-      const res = await axios.get<ApiResponse>(API_URL, {
+      const res = await axios.get<ApiResponse>(API_URL + "/products", {
         params: {
           page: options?.resetPage ? 1 : page,
           sort,

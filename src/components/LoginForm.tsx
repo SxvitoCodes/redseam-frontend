@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Input from "./Input";
 import Button from "./Button";
+import { API_URL } from "../config";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -14,8 +15,6 @@ const loginSchema = z.object({
 });
 
 type LoginData = z.infer<typeof loginSchema>;
-
-const API_URL = "https://api.redseam.redberryinternship.ge/api";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState<string | null>(null);
