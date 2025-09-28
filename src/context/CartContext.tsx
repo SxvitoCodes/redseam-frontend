@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
-import { API_URL } from "../config";
+import { authRequest } from "../helpers/authRequest";
 
 type CartItem = {
   id: number;
@@ -37,9 +36,6 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const token = localStorage.getItem("token");
-axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -49,12 +45,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const getCart = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(API_URL + "/cart", {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      setCart(data);
+      const data = await authRequest<CartItem[]>({ url: "/cart", method: "GET" });
+      if (data) setCart(data);
     } finally {
       setLoading(false);
     }
@@ -66,21 +58,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     size?: string,
     color?: string
   ) => {
-    await axios.post(API_URL + `/cart/products/${productId}`, {
-      quantity,
-      size,
-      color,
+    await authRequest<CartItem[]>({
+      url: `/cart/products/${productId}`,
+      method: "POST",
+      data: { quantity, size, color },
     });
     await getCart();
   };
 
   const updateCartItem = async (productId: number, quantity: number) => {
-    await axios.patch(API_URL + `/cart/products/${productId}`, { quantity });
+    await authRequest<CartItem[]>({
+      url: `/cart/products/${productId}`,
+      method: "PATCH",
+      data: { quantity },
+    });
     await getCart();
   };
 
   const removeFromCart = async (productId: number) => {
-    await axios.delete(API_URL + `/cart/products/${productId}`);
+    await authRequest<void>({ url: `/cart/products/${productId}`, method: "DELETE" });
     await getCart();
   };
 
@@ -91,13 +87,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     zip_code: string;
     address: string;
   }) => {
-    setLoading(true);
-    try {
-      await axios.post(API_URL + "/cart/checkout", formData);
-      await getCart(); // clear cart
-    } finally {
-      setLoading(false);
-    }
+    await authRequest<{ message: string }>({
+      url: "/cart/checkout",
+      method: "POST",
+      data: formData,
+    });
+    await getCart();
   };
 
   useEffect(() => {
