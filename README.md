@@ -1,69 +1,94 @@
-# React + TypeScript + Vite
+# RedSeam Clothing Store Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small e-commerce frontend built with **React**, **TypeScript**, and **TailwindCSS**.\
+This project demonstrates a working product listing, cart functionality, sorting, filtering, and user authentication.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **User Authentication**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  - Login and register users.
+  - Stores user token in `localStorage`.
+  - Displays user avatar in the navbar.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Products**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  - List of products fetched from API.
+  - Sort by newest, price ascending, or price descending.
+  - Filter products by price range.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Cart**
+
+  - Add items with **color**, **size**, and **quantity**.
+  - Remove items correctly based on `color` and `size`.
+  - Quantity controls (`+` and `-`).
+  - Shows subtotal, delivery fee, and total.
+  - Checkout functionality (calls API endpoint).
+
+- **State Management**
+
+  - **AuthContext**: user login/logout and token management.
+  - **CartContext**: cart management with API calls.
+
+---
+
+## Project Structure
+
+```
+src/
+├─ assets/           # Images & SVGs
+├─ components/       # Reusable UI components (Input, Button, CartPanel, etc.)
+├─ context/          # React Contexts (Auth, Cart)
+├─ helpers/          # Utilities (authRequest, colorMap, pagination)
+├─ pages/            # Page components (ProductListPage, ProductDetails)
+├─ App.tsx
+└─ main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+> Optional: shared types (`Product`, `CartItem`, `User`) could live in a `types/` folder for easier reuse across components.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## How to Run
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/SxvitoCodes/redseam-frontend
+   cd redseam-frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open the app at [http://localhost:5173](http://localhost:5173)
+
+---
+
+## Notes / Considerations
+
+- Cart API expects **color** and **size** to properly manage items.
+- Sorting and filtering are handled via API parameters.
+- All API calls are wrapped in `authRequest` helper to automatically include the token.
+- Password input has a show/hide toggle for better UX.
+- Navbar shows the user avatar if logged in, otherwise a default icon.
+
+---
+
+## Future Improvements
+
+- Add animations for dropdowns and cart panel.
+- Implement **lazy loading** or pagination for product images.
+- Add unit tests for components and context logic.
+
+---
+
+### Author
+
+Tsotne Skhvitaridze – built as part of RedSeam Clothing project
+
