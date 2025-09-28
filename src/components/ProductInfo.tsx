@@ -3,6 +3,7 @@ import type { Product } from "../pages/ProductDetails";
 import { colorMap } from "../helpers/colorMap";
 import Button from "./Button";
 import whiteCartSvg from "../assets/shopping-cart-white.svg";
+import { useCart } from "../context/CartContext";
 
 export default function ProductInfo({
   product,
@@ -18,14 +19,10 @@ export default function ProductInfo({
   const [selectedSize, setSelectedSize] = useState(product.available_sizes[0]);
   const [quantity, setQuantity] = useState(1);
 
+  const { addToCart } = useCart();
+
   const handleAddToCart = () => {
-    // todo: call cart context/store here
-    console.log("Adding to cart:", {
-      id: product.id,
-      color: selectedColor,
-      size: selectedSize,
-      quantity,
-    });
+    addToCart(product.id, quantity, selectedSize, selectedColor,);
   };
 
   return (

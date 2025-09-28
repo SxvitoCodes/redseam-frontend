@@ -5,11 +5,14 @@ import PersonSvg from "../assets/person.svg";
 import CartSvg from "../assets/shopping-cart.svg";
 import ChevronDownSvg from "../assets/chevron-down.svg";
 import { useAuth } from "../context/AuthContext";
+import CartPanel from "./Cart";
 
 export default function Navbar() {
   const { user, isLoggedIn, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  
+  const [cartOpen, setCartOpen] = useState(false);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -43,9 +46,12 @@ export default function Navbar() {
           ) : (
             <>
               {/* Cart */}
-              <button>
+              <button onClick={() => setCartOpen((prev) => !prev)}>
                 <img src={CartSvg} alt="Cart Icon" className="h-6 w-6 cursor-pointer" />
               </button>
+              
+              {/* Cart Panel */}
+              <CartPanel isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
               {/* Avatar + Dropdown */}
               <div className="relative" ref={dropdownRef}>
