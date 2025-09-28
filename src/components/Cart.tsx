@@ -125,7 +125,9 @@ export default function CartPanel({ isOpen, onClose }: Props) {
                         </button>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() =>
+                          removeFromCart(item.id, item.color, item.size)
+                        }
                         className="text-secondary text-[0.75rem] capitalize"
                       >
                         Remove

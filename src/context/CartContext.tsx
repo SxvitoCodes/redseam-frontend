@@ -24,7 +24,11 @@ type CartContextType = {
     color?: string
   ) => Promise<void>;
   updateCartItem: (productId: number, quantity: number) => Promise<void>;
-  removeFromCart: (productId: number) => Promise<void>;
+  removeFromCart: (
+    productId: number,
+    color?: string,
+    size?: string
+  ) => Promise<void>; // 👈 updated
   checkout: (formData: {
     name: string;
     surname: string;
@@ -45,7 +49,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const getCart = async () => {
     setLoading(true);
     try {
-      const data = await authRequest<CartItem[]>({ url: "/cart", method: "GET" });
+      const data = await authRequest<CartItem[]>({
+        url: "/cart",
+        method: "GET",
+      });
       if (data) setCart(data);
     } finally {
       setLoading(false);
@@ -75,8 +82,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     await getCart();
   };
 
-  const removeFromCart = async (productId: number) => {
-    await authRequest<void>({ url: `/cart/products/${productId}`, method: "DELETE" });
+  const removeFromCart = async (
+    productId: number,
+    color?: string,
+    size?: string
+  ) => {
+    await authRequest<void>({
+      url: `/cart/products/${productId}`,
+      method: "DELETE",
+      data: { color, size },
+    });
     await getCart();
   };
 
