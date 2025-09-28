@@ -97,7 +97,9 @@ export default function CartPanel({ isOpen, onClose }: Props) {
                           onClick={() =>
                             updateCartItem(
                               item.id,
-                              Math.max(1, item.quantity - 1)
+                              Math.max(1, item.quantity - 1),
+                              item.color,
+                              item.size
                             )
                           }
                           className=""
@@ -113,9 +115,13 @@ export default function CartPanel({ isOpen, onClose }: Props) {
                         </span>
                         <button
                           onClick={() =>
-                            updateCartItem(item.id, item.quantity + 1)
+                            updateCartItem(
+                              item.id,
+                              item.quantity + 1,
+                              item.color,
+                              item.size
+                            )
                           }
-                          className=""
                         >
                           <img
                             src={plusSvg}

@@ -23,7 +23,12 @@ type CartContextType = {
     size?: string,
     color?: string
   ) => Promise<void>;
-  updateCartItem: (productId: number, quantity: number) => Promise<void>;
+  updateCartItem: (
+    productId: number,
+    quantity: number,
+    color?: string,
+    size?: string
+  ) => Promise<void>;
   removeFromCart: (
     productId: number,
     color?: string,
@@ -73,11 +78,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     await getCart();
   };
 
-  const updateCartItem = async (productId: number, quantity: number) => {
+  const updateCartItem = async (
+    productId: number,
+    quantity: number,
+    color?: string,
+    size?: string
+  ) => {
     await authRequest<CartItem[]>({
       url: `/cart/products/${productId}`,
       method: "PATCH",
-      data: { quantity },
+      data: { quantity, color, size },
     });
     await getCart();
   };
