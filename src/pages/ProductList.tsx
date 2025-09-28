@@ -107,7 +107,10 @@ export default function ProductListPage() {
           {/* Filter dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowFilter((s) => !s)}
+              onClick={() => {
+                setShowFilter((prev) => !prev);
+                setShowSort(false); // close sort when filter opens
+              }}
               className="flex items-center gap-2 text-primary cursor-pointer"
             >
               <img src={adjustmentSvg} className="w-6 h-6" />
@@ -151,7 +154,10 @@ export default function ProductListPage() {
           {/* Sort dropdown */}
           <div className="relative">
             <button
-              onClick={() => setShowSort((s) => !s)}
+              onClick={() => {
+                setShowSort((prev) => !prev);
+                setShowFilter(false); // close filter when sort opens
+              }}
               className="flex items-center gap-1 text-primary cursor-pointer"
             >
               <span>{sortLabels[sort] || "Sort by"}</span>
