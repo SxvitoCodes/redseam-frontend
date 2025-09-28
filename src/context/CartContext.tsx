@@ -27,6 +27,13 @@ type CartContextType = {
   ) => Promise<void>;
   updateCartItem: (productId: number, quantity: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
+  checkout: (formData: {
+    name: string;
+    surname: string;
+    email: string;
+    zip_code: string;
+    address: string;
+  }) => Promise<void>;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -78,6 +85,22 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     await getCart();
   };
 
+  const checkout = async (formData: {
+    name: string;
+    surname: string;
+    email: string;
+    zip_code: string;
+    address: string;
+  }) => {
+    setLoading(true);
+    try {
+      await axios.post(API_URL + "/cart/checkout", formData);
+      await getCart(); // clear cart
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getCart();
   }, []);
@@ -91,6 +114,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         addToCart,
         updateCartItem,
         removeFromCart,
+        checkout,
       }}
     >
       {children}

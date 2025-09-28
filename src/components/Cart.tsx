@@ -4,6 +4,7 @@ import BigCart from "../assets/big-cart.svg";
 import Button from "./Button";
 import plusSvg from "../assets/plus.svg";
 import minusSvg from "../assets/minus.svg";
+import { Link } from "react-router-dom";
 
 type Props = { isOpen: boolean; onClose: () => void };
 
@@ -63,9 +64,12 @@ export default function CartPanel({ isOpen, onClose }: Props) {
             {/* Items */}
             <div className="overflow-y-auto max-h-[calc(100vh-200px)] p-10 space-y-4">
               {cart.map((item) => (
-                <div 
-                key={`${item.id}-${item.color ?? "default"}-${item.size ?? "default"}`} 
-                className="flex gap-4 pb-4">
+                <div
+                  key={`${item.id}-${item.color ?? "default"}-${
+                    item.size ?? "default"
+                  }`}
+                  className="flex gap-4 pb-4"
+                >
                   <img
                     src={item.cover_image}
                     alt={item.name}
@@ -104,7 +108,9 @@ export default function CartPanel({ isOpen, onClose }: Props) {
                             className="w-4 h-4"
                           />
                         </button>
-                        <span className="text-secondary text-[0.75rem]">{item.quantity}</span>
+                        <span className="text-secondary text-[0.75rem]">
+                          {item.quantity}
+                        </span>
                         <button
                           onClick={() =>
                             updateCartItem(item.id, item.quantity + 1)
@@ -144,9 +150,9 @@ export default function CartPanel({ isOpen, onClose }: Props) {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Button className="w-full mt-[102px]">
-                Go to Checkout
-              </Button>
+              <Link to={"/cart/checkout"} onClick={onClose}>
+                <Button className="w-full mt-[102px]">Go to Checkout</Button>
+              </Link>
             </div>
           </>
         )}
